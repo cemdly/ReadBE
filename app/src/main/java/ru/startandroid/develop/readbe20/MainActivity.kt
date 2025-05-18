@@ -23,7 +23,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             ReadBe20Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) {
-                    HomeScreen()
+                    HomeScreen( onNavigateToLibrary = { /* Логика перехода в библиотеку */ },
+                        onOpenBook = { bookId -> /* Логика открытия книги */ })
                 }
             }
         }

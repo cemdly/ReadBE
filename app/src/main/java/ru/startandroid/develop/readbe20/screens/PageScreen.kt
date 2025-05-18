@@ -21,7 +21,8 @@ import androidx.compose.ui.unit.sp
 import ru.startandroid.develop.readbe20.ui.theme.ReadBe20Theme
 
 @Composable
-fun PageScreen() {
+fun PageScreen(bookId: String, onBack: () -> Unit)
+ {
     Column(
         modifier = Modifier.fillMaxSize().background(Color(0xffE5D9D9)),
     ) {
@@ -88,6 +89,9 @@ fun MainText() {
 @Preview
 fun PagePreview() {
     ReadBe20Theme {
-        PageScreen()
+        PageScreen(
+            bookId = "preview_book_id",
+            onBack = {}
+        )
     }
 }

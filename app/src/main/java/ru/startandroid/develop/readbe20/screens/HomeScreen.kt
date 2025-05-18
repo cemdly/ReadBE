@@ -3,6 +3,7 @@ package ru.startandroid.develop.readbe20.screens
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
@@ -46,7 +48,8 @@ import ru.startandroid.develop.readbe20.ui.theme.ReadBe20Theme
 
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(  onNavigateToLibrary: () -> Unit,
+                 onOpenBook: (String) -> Unit) {
 
 //    top = WindowInsets.statusBars.getTop(LocalDensity.current).dp
 //    bottom = WindowInsets.statusBars.getBottom(LocalDensity.current).dp
@@ -141,7 +144,7 @@ fun NowReading() {
         Spacer(Modifier.height(20.dp))
 
         Card(
-            modifier = Modifier.fillMaxWidth().height(215.dp),
+            modifier = Modifier.fillMaxWidth().height(215.dp).clickable { onNavigateToLibrary() },
             shape = RoundedCornerShape(35.dp),
             colors = CardColors(
                 contentColor = Color.White,
@@ -263,7 +266,10 @@ fun HorizontalBookSlider(
 data class Book(
     val coverResId: Int,
     val progress: String
-)
+
+) {
+
+}
 
 @Composable
 fun BookItem(book: Book) {
@@ -304,7 +310,30 @@ fun NavPanel()
             disabledContainerColor = Color(0xff725B5B)
         )
     ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 26.dp),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            Image(
+                painter = painterResource(R.drawable.ic_home),
+                contentDescription = "Домой",
+                modifier = Modifier.size(24.dp)
+            )
 
+            Image(
+                painter = painterResource(R.drawable.ic_library),
+                contentDescription = "Библиотека",
+                modifier = Modifier.size(24.dp)
+            )
+
+            Image(
+                painter = painterResource(R.drawable.ic_settings),
+                contentDescription = "Настройки",
+                modifier = Modifier.size(24.dp)
+            )
+        }
     }
 
 }
@@ -314,6 +343,7 @@ fun NavPanel()
 @Preview
 fun HomePreview() {
     ReadBe20Theme {
-        HomeScreen()
+        HomeScreen( onNavigateToLibrary = {},
+            onOpenBook = {})
     }
 }
