@@ -27,6 +27,10 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,10 +50,8 @@ import ru.startandroid.develop.readbe20.R
 import ru.startandroid.develop.readbe20.ui.theme.ReadBe20Theme
 
 
-
 @Composable
-fun HomeScreen(  onNavigateToLibrary: () -> Unit,
-                 onOpenBook: (String) -> Unit) {
+fun HomeScreen(  onNavigateToLibrary: () -> Unit) {
 
 //    top = WindowInsets.statusBars.getTop(LocalDensity.current).dp
 //    bottom = WindowInsets.statusBars.getBottom(LocalDensity.current).dp
@@ -68,7 +70,7 @@ fun HomeScreen(  onNavigateToLibrary: () -> Unit,
 
             Spacer(Modifier.height(30.dp))
 
-            NowReading()
+            NowReading(onNavigateToLibrary)
 
             Spacer(Modifier.fillMaxHeight(0.2f))
 
@@ -128,7 +130,7 @@ fun CustomLinearProgressIndicator(
 
 
 @Composable
-fun NowReading() {
+fun NowReading(onNavigateToLibrary: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -144,7 +146,7 @@ fun NowReading() {
         Spacer(Modifier.height(20.dp))
 
         Card(
-            modifier = Modifier.fillMaxWidth().height(215.dp).clickable { onNavigateToLibrary() },
+            modifier = Modifier.fillMaxWidth().height(215.dp).clickable { onNavigateToLibrary },
             shape = RoundedCornerShape(35.dp),
             colors = CardColors(
                 contentColor = Color.White,
@@ -200,10 +202,11 @@ fun NowReading() {
 
 @Composable
 fun Title() {
+    var ass by  remember {mutableIntStateOf(0)}
     Text(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable { ass++ },
         text = "ReadBe",
-        fontSize = 40.sp,
+        fontSize = (40 + ass).sp,
         fontWeight = FontWeight.Black,
         textAlign = TextAlign.Center,
         color = Color.Black
@@ -343,7 +346,6 @@ fun NavPanel()
 @Preview
 fun HomePreview() {
     ReadBe20Theme {
-        HomeScreen( onNavigateToLibrary = {},
-            onOpenBook = {})
+        HomeScreen( onNavigateToLibrary = {})
     }
 }

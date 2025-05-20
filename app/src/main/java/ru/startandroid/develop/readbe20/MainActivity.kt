@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import navigation.AppNavHost
 import ru.startandroid.develop.readbe20.screens.HomeScreen
 import ru.startandroid.develop.readbe20.ui.theme.ReadBe20Theme
 
@@ -23,8 +24,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ReadBe20Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) {
-                    HomeScreen( onNavigateToLibrary = { /* Логика перехода в библиотеку */ },
-                        onOpenBook = { bookId -> /* Логика открытия книги */ })
+                    AppNavHost()
                 }
             }
         }
