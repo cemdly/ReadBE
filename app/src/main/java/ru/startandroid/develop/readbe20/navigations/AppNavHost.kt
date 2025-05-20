@@ -36,7 +36,8 @@ fun AppNavHost() {
 fun NavGraphBuilder.homeGraph(navController: NavController) {
     composable(NavRoute.Home.route) {
         HomeScreen(
-            onNavigateToLibrary = { navController.navigate(NavRoute.Library.route) }
+            onNavigateToLibrary = { navController.navigate(NavRoute.Library.route) },
+            onNavigateToPage = {navController.navigate(NavRoute.Page.route) }
         )
     }
 }

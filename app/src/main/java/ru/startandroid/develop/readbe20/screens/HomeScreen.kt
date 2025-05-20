@@ -9,15 +9,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -38,7 +35,6 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Fill
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -51,10 +47,7 @@ import ru.startandroid.develop.readbe20.ui.theme.ReadBe20Theme
 
 
 @Composable
-fun HomeScreen(  onNavigateToLibrary: () -> Unit) {
-
-//    top = WindowInsets.statusBars.getTop(LocalDensity.current).dp
-//    bottom = WindowInsets.statusBars.getBottom(LocalDensity.current).dp
+fun HomeScreen(onNavigateToLibrary: () -> Unit, onNavigateToPage: () -> Unit) {
 
     Column(
         modifier = Modifier.fillMaxSize().background(Color(0xffF4FBF8)),
@@ -70,7 +63,7 @@ fun HomeScreen(  onNavigateToLibrary: () -> Unit) {
 
             Spacer(Modifier.height(30.dp))
 
-            NowReading(onNavigateToLibrary)
+            NowReading(onNavigateToPage)
 
             Spacer(Modifier.fillMaxHeight(0.2f))
 
@@ -130,7 +123,7 @@ fun CustomLinearProgressIndicator(
 
 
 @Composable
-fun NowReading(onNavigateToLibrary: () -> Unit) {
+fun NowReading(onNavigateToPage: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -146,7 +139,7 @@ fun NowReading(onNavigateToLibrary: () -> Unit) {
         Spacer(Modifier.height(20.dp))
 
         Card(
-            modifier = Modifier.fillMaxWidth().height(215.dp).clickable { onNavigateToLibrary },
+            modifier = Modifier.fillMaxWidth().height(215.dp).clickable { onNavigateToPage()},
             shape = RoundedCornerShape(35.dp),
             colors = CardColors(
                 contentColor = Color.White,
@@ -346,6 +339,8 @@ fun NavPanel()
 @Preview
 fun HomePreview() {
     ReadBe20Theme {
-        HomeScreen( onNavigateToLibrary = {})
+        HomeScreen(
+            onNavigateToLibrary = {},
+            onNavigateToPage = {})
     }
 }

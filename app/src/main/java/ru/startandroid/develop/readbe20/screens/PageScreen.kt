@@ -1,6 +1,5 @@
 package ru.startandroid.develop.readbe20.screens
 
-import android.graphics.pdf.PdfDocument.Page
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,7 +28,7 @@ fun PageScreen(bookId: String, onBack: () -> Unit)
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding( end = 16.dp, bottom = 20.dp, top = 16.dp)
+                .padding( end = 16.dp, bottom = 20.dp, top = 32.dp)
         ) {
             InfoTop()
 
