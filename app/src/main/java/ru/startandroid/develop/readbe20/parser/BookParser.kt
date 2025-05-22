@@ -6,7 +6,7 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import java.io.File
 import java.io.FileOutputStream
-
+//
 fun copyFileToInternalStorage(context: Context, uri: Uri) {
     try {
         val inputStream = context.contentResolver.openInputStream(uri)
