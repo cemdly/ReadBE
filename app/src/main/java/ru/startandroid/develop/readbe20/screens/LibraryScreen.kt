@@ -43,14 +43,7 @@ import ru.startandroid.develop.readbe20.ui.theme.ReadBe20Theme
 //
 @Composable
 fun LibraryScreen(onOpenBook: (String) -> Unit) {
-    val context = LocalContext.current
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        uri?.let {
-            copyFileToInternalStorage(context, it)
-        }
-    }
+
     Box(
         modifier = Modifier.fillMaxSize().background(Color(0xffF4FBF8))
     ) {
