@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,7 +39,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.startandroid.develop.readbe20.R
-import ru.startandroid.develop.readbe20.parser.copyFileToInternalStorage
 import ru.startandroid.develop.readbe20.ui.theme.ReadBe20Theme
 //
 @Composable
@@ -70,38 +70,8 @@ fun LibraryScreen(onOpenBook: (String) -> Unit) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
             ) {
-                item {
-                    BookCard(
-                        coverResId = R.drawable.book1,
-                        title = "Генерал в своём лабиринте",
-                        author = "Габриэль Гарсия Маркес",
-                        year = 1989
-                    )
-                }
-                item {
-                    BookCard(
-                        coverResId = R.drawable.cover,
-                        title = "Гарри Поттер: Дары смерти",
-                        author = "Джоан Роулинг",
-                        year = 2007
-                    )
-                }
-                item {
-                    BookCard(
-                        coverResId = R.drawable.book2,
-                        title = "Мастер и Маргарита",
-                        author = "Михаил Булгаков",
-                        year = 1967
-                    )
-                }
-                item {
-                    BookCard(
-                        coverResId = R.drawable.book1,
-                        title = "1984",
-                        author = "Джордж Оруэлл",
-                        year = 1949
-                    )
-                }
+
+
 
             }
         }
@@ -124,6 +94,7 @@ fun Header() {
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_search),
+            modifier = Modifier.clickable {  },
             contentDescription = "Поиск",
         )
 

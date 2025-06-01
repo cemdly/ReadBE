@@ -45,26 +45,13 @@ fun NavGraphBuilder.homeGraph(navController: NavController) {
 fun NavGraphBuilder.libraryGraph(navController: NavController) {
     composable(NavRoute.Library.route) {
         LibraryScreen(
-            onOpenBook = { bookId ->
-                navController.navigate(NavRoute.Page.createRoute(bookId))
-            }
+            onOpenBook = { }
         )
     }
 }
 
 fun NavGraphBuilder.pageGraph(navController: NavController) {
-    composable(
-        route = NavRoute.Page.route,
-        arguments = listOf(
-            navArgument("bookId") { type = NavType.StringType }
-        )
-    ) { backStackEntry ->
-        val bookId = backStackEntry.arguments?.getString("bookId") ?: "Unknown"
-        PageScreen(
-            bookId = bookId,
-            onBack = {
-                navController.popBackStack()
-            }
-        )
+    composable(NavRoute.Page.route) {
+        PageScreen({})
     }
 }

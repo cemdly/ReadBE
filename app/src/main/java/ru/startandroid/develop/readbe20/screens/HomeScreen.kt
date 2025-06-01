@@ -71,7 +71,7 @@ fun HomeScreen(onNavigateToLibrary: () -> Unit, onNavigateToPage: () -> Unit) {
 
             Spacer(Modifier.weight(1f))
 
-            NavPanel()
+            NavPanel(onNavigateToLibrary)
 
 
 
@@ -195,14 +195,13 @@ fun NowReading(onNavigateToPage: () -> Unit) {
 //
 @Composable
 fun Title() {
-    var ass by  remember {mutableIntStateOf(0)}
     Text(
-        modifier = Modifier.fillMaxWidth().clickable { ass++ },
+        modifier = Modifier.fillMaxWidth(),
         text = "ReadBe",
-        fontSize = (40 + ass).sp,
+        fontSize = (40).sp,
         fontWeight = FontWeight.Black,
         textAlign = TextAlign.Center,
-        color = Color.Black
+        color = Color(0xff725B5B)
     )
 
     Spacer(Modifier.height(24.dp))
@@ -294,8 +293,7 @@ fun BookItem(book: Book) {
 }
 
 @Composable
-fun NavPanel()
-{
+fun NavPanel(onNavigateToLibrary: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth().height(80.dp).width(80.dp),
         shape = RoundedCornerShape(35.dp),
@@ -321,7 +319,7 @@ fun NavPanel()
             Image(
                 painter = painterResource(R.drawable.ic_library),
                 contentDescription = "Библиотека",
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp).clickable { onNavigateToLibrary() }
             )
 
             Image(
