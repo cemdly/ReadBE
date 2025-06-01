@@ -1,6 +1,7 @@
 package ru.startandroid.develop.readbe20.screens
 
 import android.net.Uri
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -31,7 +32,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -42,7 +42,15 @@ import ru.startandroid.develop.readbe20.R
 import ru.startandroid.develop.readbe20.ui.theme.ReadBe20Theme
 //
 @Composable
-fun LibraryScreen(onOpenBook: (String) -> Unit) {
+fun LibraryScreen(onOpenBook: (Uri) -> Unit) {
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument(),
+        onResult = { uri ->
+            if (uri != null) {
+                onOpenBook(uri)
+            }
+        }
+    )
 
     Box(
         modifier = Modifier.fillMaxSize().background(Color(0xffF4FBF8))
@@ -53,7 +61,7 @@ fun LibraryScreen(onOpenBook: (String) -> Unit) {
                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 32.dp)
         ) {
             // ШАПКА С ПОИСКОМ
-            Header()
+            Header(launcher)
 
             // РАЗДЕЛИТЕЛЬ ПОСЛЕ ШАПКИ
             HorizontalDivider(
@@ -85,7 +93,7 @@ fun LibraryScreen(onOpenBook: (String) -> Unit) {
 // ШАПКА С ПОИСКОМ
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Header() {
+fun Header(launcher: ManagedActivityResultLauncher<Array<String>, Uri?>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -94,7 +102,6 @@ fun Header() {
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_search),
-            modifier = Modifier.clickable {  },
             contentDescription = "Поиск",
         )
 
@@ -112,7 +119,7 @@ fun Header() {
         Image(
             painter = painterResource(id = R.drawable.ic_add),
             contentDescription = "Добавить книгу",
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp).clickable { launcher.launch(arrayOf("application/epub+zip")) },
         )
     }
 }
