@@ -1,6 +1,10 @@
 package ru.startandroid.develop.readbe20.screens
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -40,14 +45,48 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.startandroid.develop.readbe20.R
 import ru.startandroid.develop.readbe20.ui.theme.ReadBe20Theme
-//
+import java.io.File
+import java.io.FileOutputStream
+
+
+object FileUtils {
+    fun copyUriToFile(context: Context, uri: Uri): File? {
+        return try {
+            val cacheFile = File.createTempFile("epub_", ".tmp", context.cacheDir)
+            context.contentResolver.openInputStream(uri)?.use { input ->
+                FileOutputStream(cacheFile).use { output ->
+                    input.copyTo(output)
+                }
+            }
+            cacheFile
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+}
+
+@SuppressLint("WrongConstant")
 @Composable
-fun LibraryScreen(onOpenBook: (Uri) -> Unit) {
+fun LibraryScreen(onOpenBook: (String) -> Unit, onNavigateToHome: () -> Unit) {
+    var anyBook: Boolean = false
+
+    val context = LocalContext.current
+
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
         onResult = { uri ->
             if (uri != null) {
-                onOpenBook(uri)
+                val contentResolver = context.contentResolver
+                try {
+
+                    Log.d("Launcher", "Получен URI: $uri")
+                } catch (e: Exception) {
+                    Log.e("Launcher", "Ошибка получения долгосрочного доступа", e)
+                }
+
+                val safeUri = Uri.encode(uri.toString())
+                onOpenBook(safeUri)
             }
         }
     )
@@ -74,18 +113,33 @@ fun LibraryScreen(onOpenBook: (Uri) -> Unit) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // СПИСОК КНИГ
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-            ) {
+            if (!anyBook) {
 
+                Text(
+                    text = "Здесь пока ничего нет (",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.LightGray,
+                    modifier = Modifier.fillMaxWidth().padding(top = 32.dp),
+                    textAlign = TextAlign.Center
+                )
 
+            }
+            else {
+
+                // СПИСОК КНИГ
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                ) {}
 
             }
         }
 
         // НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ (ПОВЕРХ ВСЕГО)
-        Nav2Panel(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp).align(Alignment.BottomCenter)
+        Nav2Panel(
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+                .align(Alignment.BottomCenter),
+            onNavigateToHome = onNavigateToHome
         )
     }
 }
@@ -124,13 +178,14 @@ fun Header(launcher: ManagedActivityResultLauncher<Array<String>, Uri?>) {
     }
 }
 
+
 // КАРТОЧКА КНИГИ
 @Composable
 fun BookCard(coverResId: Int, title: String, author: String, year: Int) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp), // Увеличили высоту карточки
+            .height(200.dp),
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
@@ -201,7 +256,7 @@ fun BookCard(coverResId: Int, title: String, author: String, year: Int) {
 }
 
 @Composable
-fun Nav2Panel(modifier: Modifier = Modifier) {
+fun Nav2Panel(modifier: Modifier = Modifier, onNavigateToHome: () -> Unit) {
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -219,7 +274,7 @@ fun Nav2Panel(modifier: Modifier = Modifier) {
             Image(
                 painter = painterResource(id = R.drawable.ic_home),
                 contentDescription = "Домой",
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp).clickable { onNavigateToHome() }
             )
 
             Image(
@@ -242,7 +297,7 @@ fun Nav2Panel(modifier: Modifier = Modifier) {
 fun LibraryPreview() {
     ReadBe20Theme {
         LibraryScreen(
-            onOpenBook ={}
+            onOpenBook ={}, {}
         )
     }
 }
